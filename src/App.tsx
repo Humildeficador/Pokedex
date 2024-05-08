@@ -1,5 +1,10 @@
+import { Loader2Icon } from "lucide-react";
+import { Container } from "./styles/container";
+
 export function App() {
   return (
-    <h1>Hello World</h1>
+    <Container>
+      <Loader2Icon className="loadingIcon" />
+    </Container>
   );
 }
