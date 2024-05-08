@@ -41,13 +41,15 @@ const PokeListContext = createContext<PokeListContextData>({} as PokeListContext
 
 export function PokeListProvider({ children }: PokeListContextProps) {
     const [pokeListDetails, setPokeListDetails] = useState<PokeListDetailsProps[]>([])
+    //State para feedback de 'loading'
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
+        //Pega lista com name, url dos pokemons
         async function fetchPokemonList(callback: (pokeList: PokeListProps[]) => void): Promise<void> {
             setIsLoading(true)
             try {
-                const { data: { results } } = await api.get<ApiPokeListResponseProps>('/api/v2/pokemon?limit=150&offset=0')
+                const { data: { results } } = await api.get<ApiPokeListResponseProps>('/api/v2/pokemon')
                 callback(results)
             } catch (error) {
                 console.error('Erro ao obter a lista de pokemons', error);
@@ -57,6 +59,7 @@ export function PokeListProvider({ children }: PokeListContextProps) {
             }
         }
 
+        //Para cada pokemon na lista, pega seus detalhes pela prop url
         async function fetchPokemonDetails(pokeList: PokeListProps[]): Promise<void> {
             setIsLoading(true)
             try {
