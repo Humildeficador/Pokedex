@@ -1,10 +1,20 @@
 import { Loader2Icon } from "lucide-react";
-import { Container } from "./styles/container";
+import { usePokeList } from "./hooks/usePokeList";
 
 export function App() {
+  const { PokeList, isLoading } = usePokeList()
+
+  console.log(PokeList)
+
   return (
-    <Container>
-      <Loader2Icon className="loadingIcon" />
-    </Container>
-  );
+    <div>
+      {isLoading ? <Loader2Icon className="loadingIcon" size={40}/>
+        : PokeList.map(({ id, name, sprite }) => (
+          <div key={id}>
+            <img src={sprite} alt={name} />
+          </div>
+        ))
+      }
+    </div>
+  )
 }
