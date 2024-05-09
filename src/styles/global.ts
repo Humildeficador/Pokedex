@@ -42,7 +42,11 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .loadingIcon {
-        animation: rotate 2s linear infinite;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+        animation: rotate 2.5s ease-in-out infinite;
     }
 
     @keyframes rotate {

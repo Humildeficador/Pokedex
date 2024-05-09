@@ -47,15 +47,11 @@ export function PokeListProvider({ children }: PokeListContextProps) {
     useEffect(() => {
         //Pega lista com name, url dos pokemons
         async function fetchPokemonList(callback: (pokeList: PokeListProps[]) => void): Promise<void> {
-            setIsLoading(true)
             try {
                 const { data: { results } } = await api.get<ApiPokeListResponseProps>('/api/v2/pokemon')
                 callback(results)
             } catch (error) {
                 console.error('Erro ao obter a lista de pokemons', error);
-            }
-            finally {
-                setIsLoading(false)
             }
         }
 
