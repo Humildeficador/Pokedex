@@ -1,4 +1,4 @@
-import { capitalize } from "../utils/capitalize"
+import { capitalize } from "./capitalize"
 
 export function getTypeInfo(types: string[]) {
     return types.map(type => {
