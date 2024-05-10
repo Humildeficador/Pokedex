@@ -1,5 +1,5 @@
 import { Loader2Icon } from "lucide-react";
-import { PokeCard } from "./components/PokeCard";
+import { PokeCard } from "./components/PokeCard/PokeCard";
 import { usePokeList } from "./hooks/usePokeList/usePokeList";
 import { Container } from "./styles/styles";
 

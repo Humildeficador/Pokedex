@@ -1,6 +1,6 @@
-import { PokeListDetailsProps } from '../hooks/usePokeList/usePokeListInterfaces';
-import { capitalize } from '../utils/capitalize';
-import { getTypeInfo } from './getTypeInfo';
+import { PokeListDetailsProps } from '../../hooks/usePokeList/usePokeListInterfaces';
+import { capitalize } from '../../utils/capitalize';
+import { getTypeInfo } from '../../utils/getTypeInfo';
 import { Card, TypeCardContainer } from './styles';
 
 interface PokeCardProps {
