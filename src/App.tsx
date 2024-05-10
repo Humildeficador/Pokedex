@@ -1,6 +1,6 @@
 import { Loader2Icon } from "lucide-react";
 import { PokeCard } from "./components/PokeCard";
-import { usePokeList } from "./hooks/usePokeList";
+import { usePokeList } from "./hooks/usePokeList/usePokeList";
 import { Container } from "./styles/styles";
 
 export function App() {
@@ -19,7 +19,9 @@ export function App() {
           <Loader2Icon size={200} color="#FFFFFF" />
         </div>
       }
-      <button onClick={handleOffsetValue}>Carregar mais pokemons</button>
+      {isLoading ? '' : <button onClick={handleOffsetValue}>
+        Carregar mais pokemons
+      </button>}
     </>
   )
 }

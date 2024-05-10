@@ -1,60 +1,8 @@
 import { extractColors } from 'extract-colors';
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-import { api } from "../services/api";
-
-interface PokeListProps {
-    name: string
-    url: string
-}
-
-interface ApiPokeListResponseProps {
-    results: PokeListProps[]
-}
-
-export interface PokeListDetailsProps {
-    id: number
-    name: string
-    sprite: string
-    types: string[]
-    hp: number
-    height: number
-    weight: number
-    color: string
-}
-
-interface ApiPokeListDetailsResponseProps {
-    id: number
-    name: string
-    sprites: {
-        other: {
-            dream_world: {
-                front_default: string
-            }
-        }
-    }
-    height: number
-    weight: number
-    types: {
-        type: {
-            name: string
-            url: string
-        }
-    }[]
-    stats: {
-        base_stat: number
-    }[]
-}
-
-interface PokeListContextProps {
-    children: ReactNode,
-}
-
-interface PokeListContextData {
-    PokeList: PokeListDetailsProps[]
-    isLoading: boolean
-    handleOffsetValue: () => void
-}
+import { api } from "../../services/api";
+import { ApiPokeListDetailsResponseProps, ApiPokeListResponseProps, PokeListContextData, PokeListContextProps, PokeListDetailsProps } from './usePokeListInterfaces';
 
 const PokeListContext = createContext<PokeListContextData>({} as PokeListContextData)
 
@@ -91,7 +39,7 @@ export function PokeListProvider({ children }: PokeListContextProps) {
                         color: extractedColors[0].hex
                     }
                 }))
-
+                
                 if (hasFetchedInitialData) {
                     setPokeListDetails((prevState) => {
                         return [...prevState, ...newList]
@@ -109,6 +57,7 @@ export function PokeListProvider({ children }: PokeListContextProps) {
         }
 
         fetchPokemonList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [offset])
 
     return (
