@@ -51,7 +51,7 @@ export const Card = styled.div<CardProps>`
     }
     
     .imagem {
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
 
         width: 100%;
         position: relative;
@@ -88,14 +88,60 @@ export const Card = styled.div<CardProps>`
     }
 `
 
-interface TypeCardContainerProps {
+interface TypeCardContentProps {
     $color: string
 }
 
-export const TypeCardContainer = styled.div<TypeCardContainerProps>`
+export const Description = styled.div`
+    width: 100%;
+    height: 10rem;
+`
+
+export const TypeContainer = styled.div`
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    width: 100%;
+`
+
+export const TypeContent = styled.div<TypeCardContentProps>`
     background: ${props => props.$color};
     display: flex;
     align-items: center;
     gap: 1rem;
     width: 8rem;
+    height: 20%;
+`
+
+export const AbilityContainer = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-height: 80%;
+    gap: .25rem;
+`
+
+export const AbilityContent = styled.div`
+    font-size: .75rem;
+    overflow-y: auto;
+    > span {
+        font-weight: 500;
+    }
+
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: .25rem;
+        margin: .25rem 0;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: #888;
+        border: 1px solid #f1f1f1;
+        border-radius: .25rem;
+    }
 `
