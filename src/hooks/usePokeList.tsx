@@ -1,4 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { extractColors } from 'extract-colors';
+
 import { api } from "../services/api";
 
 interface PokeListProps {
@@ -10,10 +12,15 @@ interface ApiPokeListResponseProps {
     results: PokeListProps[]
 }
 
-interface PokeListDetailsProps {
+export interface PokeListDetailsProps {
     id: number
     name: string
     sprite: string
+    types: string[]
+    hp: number
+    height: number
+    weight: number
+    color: string
 }
 
 interface ApiPokeListDetailsResponseProps {
@@ -26,6 +33,17 @@ interface ApiPokeListDetailsResponseProps {
             }
         }
     }
+    height: number
+    weight: number
+    types: {
+        type: {
+            name: string
+            url: string
+        }
+    }[]
+    stats: {
+        base_stat: number
+    }[]
 }
 
 interface PokeListContextProps {
@@ -35,20 +53,28 @@ interface PokeListContextProps {
 interface PokeListContextData {
     PokeList: PokeListDetailsProps[]
     isLoading: boolean
+    handleOffsetValue: () => void
 }
 
 const PokeListContext = createContext<PokeListContextData>({} as PokeListContextData)
 
 export function PokeListProvider({ children }: PokeListContextProps) {
     const [pokeListDetails, setPokeListDetails] = useState<PokeListDetailsProps[]>([])
-    //State para feedback de 'loading'
-    const [isLoading, setIsLoading] = useState(false)
+    const [offset, setOffset] = useState(0)
+
+    const [isLoading, setIsLoading] = useState(false) //State para feedback de 'loading'
+    const [hasFetchedInitialData, setHasFetchedInitialData] = useState(false); //State para controlar dados iniciais
+
+
+    function handleOffsetValue() {
+        setOffset(prevState => prevState + 20);
+    }
 
     useEffect(() => {
         //Pega lista com name, url dos pokemons
         async function fetchPokemonList(callback: (pokeList: PokeListProps[]) => void): Promise<void> {
             try {
-                const { data: { results } } = await api.get<ApiPokeListResponseProps>('/api/v2/pokemon')
+                const { data: { results } } = await api.get<ApiPokeListResponseProps>(`/api/v2/pokemon?offset=${offset}&limit=20`)
                 callback(results)
             } catch (error) {
                 console.error('Erro ao obter a lista de pokemons', error);
@@ -61,14 +87,29 @@ export function PokeListProvider({ children }: PokeListContextProps) {
             try {
                 const promises = pokeList.map(async pokemon => {
                     const { data } = await api.get<ApiPokeListDetailsResponseProps>(pokemon.url)
+                    const sprite = data.sprites.other.dream_world.front_default
+                    const extractedColors = await extractColors(sprite, { crossOrigin: 'anonymous', distance: 1 })
                     return {
                         id: data.id,
                         name: data.name,
-                        sprite: data.sprites.other.dream_world.front_default
+                        sprite,
+                        types: data.types.map(type => type.type.name),
+                        hp: data.stats[0].base_stat,
+                        height: data.height / 10,
+                        weight: data.weight / 10,
+                        color: extractedColors[0].hex
                     }
                 })
 
-                setPokeListDetails(await Promise.all(promises))
+                const newList = await Promise.all(promises)
+                if (!hasFetchedInitialData) {
+                    setPokeListDetails(newList)
+                    setHasFetchedInitialData(true)
+                } else {
+                    setPokeListDetails((prevState) => {
+                        return [...prevState, ...newList]
+                    })
+                }
             } catch (error) {
                 console.error('Erro ao obter a lista de pokemons', error);
             }
@@ -78,12 +119,13 @@ export function PokeListProvider({ children }: PokeListContextProps) {
         }
 
         fetchPokemonList(fetchPokemonDetails);
-    }, [])
+    }, [offset])
 
     return (
         <PokeListContext.Provider value={{
             PokeList: pokeListDetails,
-            isLoading
+            isLoading,
+            handleOffsetValue
         }}>
             {children}
         </PokeListContext.Provider>
