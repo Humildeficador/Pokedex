@@ -1,5 +1,5 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { extractColors } from 'extract-colors';
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 import { api } from "../services/api";
 
@@ -63,7 +63,7 @@ export function PokeListProvider({ children }: PokeListContextProps) {
     const [offset, setOffset] = useState(0)
 
     const [isLoading, setIsLoading] = useState(false) //State para feedback de 'loading'
-    const [hasFetchedInitialData, setHasFetchedInitialData] = useState(false); //State para controlar dados iniciais
+    const [hasFetchedInitialData, setHasFetchedInitialData] = useState<boolean>(false); //State para controlar dados iniciais
 
 
     function handleOffsetValue() {
@@ -71,24 +71,15 @@ export function PokeListProvider({ children }: PokeListContextProps) {
     }
 
     useEffect(() => {
-        //Pega lista com name, url dos pokemons
-        async function fetchPokemonList(callback: (pokeList: PokeListProps[]) => void): Promise<void> {
-            try {
-                const { data: { results } } = await api.get<ApiPokeListResponseProps>(`/api/v2/pokemon?offset=${offset}&limit=20`)
-                callback(results)
-            } catch (error) {
-                console.error('Erro ao obter a lista de pokemons', error);
-            }
-        }
-
         //Para cada pokemon na lista, pega seus detalhes pela prop url
-        async function fetchPokemonDetails(pokeList: PokeListProps[]): Promise<void> {
+        async function fetchPokemonList(): Promise<void> {
             setIsLoading(true)
             try {
-                const promises = pokeList.map(async pokemon => {
+                const { data: { results } } = await api.get<ApiPokeListResponseProps>(`/api/v2/pokemon?offset=${offset}&limit=20`)
+                const newList = await Promise.all(results.map(async pokemon => {
                     const { data } = await api.get<ApiPokeListDetailsResponseProps>(pokemon.url)
                     const sprite = data.sprites.other.dream_world.front_default
-                    const extractedColors = await extractColors(sprite, { crossOrigin: 'anonymous', distance: 1 })
+                    const extractedColors = await extractColors(sprite, { crossOrigin: 'anonymous', distance: 1, pixels: 40000 })
                     return {
                         id: data.id,
                         name: data.name,
@@ -99,16 +90,15 @@ export function PokeListProvider({ children }: PokeListContextProps) {
                         weight: data.weight / 10,
                         color: extractedColors[0].hex
                     }
-                })
+                }))
 
-                const newList = await Promise.all(promises)
-                if (!hasFetchedInitialData) {
-                    setPokeListDetails(newList)
-                    setHasFetchedInitialData(true)
-                } else {
+                if (hasFetchedInitialData) {
                     setPokeListDetails((prevState) => {
                         return [...prevState, ...newList]
                     })
+                } else {
+                    setPokeListDetails(newList)
+                    setHasFetchedInitialData(true)
                 }
             } catch (error) {
                 console.error('Erro ao obter a lista de pokemons', error);
@@ -118,7 +108,7 @@ export function PokeListProvider({ children }: PokeListContextProps) {
             }
         }
 
-        fetchPokemonList(fetchPokemonDetails);
+        fetchPokemonList();
     }, [offset])
 
     return (
