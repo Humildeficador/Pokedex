@@ -14,7 +14,7 @@ export const GlobalStyle = createGlobalStyle`
 
     body {
         background: var(--slate-950);
-        color: var(--zinc-100);
+        color: var(--slate-950);
     }
 
     body, input, textarea, button {
@@ -42,11 +42,24 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .loadingIcon {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        translate: -50% -50%;
-        animation: rotate 2.5s ease-in-out infinite;
+        z-index: 999;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        /* background-color: var(--slate-950); */
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        backdrop-filter: blur(20px);
+
+        > svg {
+            animation: rotate 2.5s ease-in-out infinite;
+        }
     }
 
     @keyframes rotate {
