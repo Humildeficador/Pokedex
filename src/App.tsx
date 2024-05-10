@@ -1,17 +1,25 @@
 import { Loader2Icon } from "lucide-react";
-import { usePokeList } from "./hooks/usePokeList";
 import { PokeCard } from "./components/PokeCard";
+import { usePokeList } from "./hooks/usePokeList";
 import { Container } from "./styles/styles";
 
 export function App() {
-  const { PokeList, isLoading } = usePokeList()
+  const { PokeList, isLoading, handleOffsetValue } = usePokeList()
+
   return (
-    <Container>
-      {isLoading ? <Loader2Icon className="loadingIcon" size={200} />
-        : PokeList.map(pokemon => (
+    <>
+      <Container>
+        {PokeList.map(pokemon => (
           <PokeCard key={pokemon.id} pokemon={pokemon} />
         ))
+        }
+      </Container>
+      {isLoading &&
+        <div className="loadingIcon">
+          <Loader2Icon size={200} color="#FFFFFF" />
+        </div>
       }
-    </Container>
+      <button onClick={handleOffsetValue}>Carregar mais pokemons</button>
+    </>
   )
 }
