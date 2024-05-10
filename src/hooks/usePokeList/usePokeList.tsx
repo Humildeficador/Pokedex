@@ -2,7 +2,8 @@ import { extractColors } from 'extract-colors';
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { api } from "../../services/api";
-import { ApiPokeListDetailsResponseProps, ApiPokeListResponseProps, PokeListContextData, PokeListContextProps, PokeListDetailsProps } from './usePokeListInterfaces';
+import { capitalize } from '../../utils/capitalize';
+import { APIAbilitiesProps, AbilitiesProps, AbilityProps, ApiPokeListDetailsResponseProps, ApiPokeListResponseProps, PokeListContextData, PokeListContextProps, PokeListDetailsProps } from './usePokeListInterfaces';
 
 const PokeListContext = createContext<PokeListContextData>({} as PokeListContextData)
 
@@ -26,12 +27,14 @@ export function PokeListProvider({ children }: PokeListContextProps) {
                 const { data: { results } } = await api.get<ApiPokeListResponseProps>(`/api/v2/pokemon?offset=${offset}&limit=20`)
                 const newList = await Promise.all(results.map(async pokemon => {
                     const { data } = await api.get<ApiPokeListDetailsResponseProps>(pokemon.url)
+                    const abilities = await fetchPokemonAbilities(data.abilities)
                     const sprite = data.sprites.other.dream_world.front_default
                     const extractedColors = await extractColors(sprite, { crossOrigin: 'anonymous', distance: 1, pixels: 40000 })
                     return {
                         id: data.id,
-                        name: data.name,
+                        name: capitalize(data.name),
                         sprite,
+                        abilities,
                         types: data.types.map(type => type.type.name),
                         hp: data.stats[0].base_stat,
                         height: data.height / 10,
@@ -39,7 +42,7 @@ export function PokeListProvider({ children }: PokeListContextProps) {
                         color: extractedColors[0].hex
                     }
                 }))
-                
+
                 if (hasFetchedInitialData) {
                     setPokeListDetails((prevState) => {
                         return [...prevState, ...newList]
@@ -48,6 +51,7 @@ export function PokeListProvider({ children }: PokeListContextProps) {
                     setPokeListDetails(newList)
                     setHasFetchedInitialData(true)
                 }
+
             } catch (error) {
                 console.error('Erro ao obter a lista de pokemons', error);
             }
@@ -56,8 +60,23 @@ export function PokeListProvider({ children }: PokeListContextProps) {
             }
         }
 
+        async function fetchPokemonAbilities(abilitiesList: AbilitiesProps[]): Promise<AbilityProps[]> {
+            const pokeAbilities = abilitiesList.slice(0, 2)
+
+            return Promise.all(pokeAbilities.map(async ({ ability }) => {
+                const { data } = await api.get<APIAbilitiesProps>(ability.url)
+
+                const text = data.flavor_text_entries.find(text_entries => text_entries.language.name === 'en')
+
+                return {
+                    name: capitalize(ability.name.replace('-', ' ')),
+                    text: text?.flavor_text || `I'm sorry, we have no information about this ability`,
+                }
+            }))
+        }
+
         fetchPokemonList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [offset])
 
     return (

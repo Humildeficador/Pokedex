@@ -1,5 +1,11 @@
 import { capitalize } from "./capitalize"
 
+export interface getTypeInfoProps {
+    name: string
+    color: string
+    img: string
+}
+
 export function getTypeInfo(types: string[]) {
     return types.map(type => {
         switch (type) {

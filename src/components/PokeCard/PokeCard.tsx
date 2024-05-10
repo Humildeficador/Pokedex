@@ -1,24 +1,23 @@
-import { PokeListDetailsProps } from '../../hooks/usePokeList/usePokeListInterfaces';
-import { capitalize } from '../../utils/capitalize';
-import { getTypeInfo } from '../../utils/getTypeInfo';
-import { Card, TypeCardContainer } from './styles';
+import { AbilityProps, PokeListDetailsProps } from '../../hooks/usePokeList/usePokeListInterfaces';
+import { getTypeInfo, getTypeInfoProps } from '../../utils/getTypeInfo';
+import { AbilityContainer, AbilityContent, Card, Description, TypeContainer, TypeContent } from './styles';
 
 interface PokeCardProps {
     pokemon: PokeListDetailsProps
 }
 
-export function PokeCard({ pokemon: { id, name, sprite, types, hp, height, weight, color } }: PokeCardProps) {
+export function PokeCard({ pokemon }: PokeCardProps) {
 
-    const pokeTypes = getTypeInfo(types)
+    const pokeTypes = getTypeInfo(pokemon.types)
 
     return (
-        <Card $color={color} $typeColor={pokeTypes[0].color}>
+        <Card $color={pokemon.color} $typeColor={pokeTypes[0].color}>
             <div className="title">
-                <span className='name'>{capitalize(name)}</span>
+                <span className='name'>{pokemon.name}</span>
                 <div className='hp'>
                     <span>
                         <span>ps</span>
-                        {hp}
+                        {pokemon.hp}
                     </span>
                     <img
                         src={pokeTypes[0].img}
@@ -29,38 +28,52 @@ export function PokeCard({ pokemon: { id, name, sprite, types, hp, height, weigh
                 </div>
             </div>
             <div className='imagem'>
-                <img src={sprite} alt={name} width={200} height={200} />
+                <img src={pokemon.sprite} alt={pokemon.name} width={200} height={200} />
                 <div className='description'>
-                    <span className='id'>Nº{id.toString().padStart(3, '0')}</span>
-                    <span className='height'>Altura: {height.toFixed(1)}m</span>
-                    <span className='weight'>Peso: {weight}kg</span>
+                    <span className='id'>Nº{pokemon.id.toString().padStart(3, '0')}</span>
+                    <span className='height'>Altura: {pokemon.height.toFixed(1)}m</span>
+                    <span className='weight'>Peso: {pokemon.weight}kg</span>
                 </div>
             </div>
-            {pokeTypes.map(type =>
-                <TypeCard
-                    key={name + type.name}
-                    src={type.img}
-                    name={type.name}
-                    size={20}
-                    color={type.color}
-                />
-            )}
+            <TypeCard pokeTypes={pokeTypes} name={pokemon.name} abilities={pokemon.abilities} />
         </Card>
     );
 }
 
 interface TypeCardProps {
-    src: string
     name: string
-    size: number
-    color: string
+    abilities: AbilityProps[]
+    pokeTypes: getTypeInfoProps[]
 }
 
-function TypeCard({ size, src, name, color }: TypeCardProps) {
+function TypeCard({ name, abilities, pokeTypes }: TypeCardProps) {
     return (
-        <TypeCardContainer $color={color}>
-            <img src={src} alt={name} width={size} height={size} />
-            <span>{name}</span>
-        </TypeCardContainer>
+        <Description>
+            <TypeContainer>
+                {pokeTypes.map(type => (
+                    <TypeContent
+                        $color={type.color}
+                        key={`${name}Type${type.name}`}>
+                        <img
+                            src={type.img}
+                            alt={type.name}
+                            width={20}
+                            height={20}
+                        />
+                        <span>{type.name}</span>
+                    </TypeContent>
+                ))}
+            </TypeContainer>
+            <AbilityContainer>
+                {abilities.map(ability => (
+                    <AbilityContent key={name+ability.name}>
+                        <span>
+                            {ability.name}
+                        </span>
+                        <p>{ability.text}</p>
+                    </AbilityContent>
+                ))}
+            </AbilityContainer>
+        </Description>
     );
 }

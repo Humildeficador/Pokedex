@@ -1,12 +1,12 @@
 import { ReactNode } from "react"
 
-export interface PokeListProps {
+export interface NamedAPIResource {
     name: string
     url: string
 }
 
 export interface ApiPokeListResponseProps {
-    results: PokeListProps[]
+    results: NamedAPIResource[]
 }
 
 export interface PokeListDetailsProps {
@@ -18,6 +18,7 @@ export interface PokeListDetailsProps {
     height: number
     weight: number
     color: string
+    abilities: AbilityProps[]
 }
 
 export interface ApiPokeListDetailsResponseProps {
@@ -41,6 +42,29 @@ export interface ApiPokeListDetailsResponseProps {
     stats: {
         base_stat: number
     }[]
+    abilities: AbilitiesProps[]
+}
+
+export interface AbilitiesProps {
+    ability: NamedAPIResource
+}
+
+export interface APIAbilitiesProps {
+    name: string
+    effect_entries: {
+        short_effect: string | null
+    }[]
+    flavor_text_entries: {
+        flavor_text: string
+        language: {
+            name: string
+        }
+    }[]
+}
+
+export interface AbilityProps {
+    name: string;
+    text: string;
 }
 
 export interface PokeListContextProps {
