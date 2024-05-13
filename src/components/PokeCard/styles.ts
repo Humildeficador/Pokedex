@@ -1,5 +1,5 @@
+import { desaturate, saturate } from 'polished';
 import styled from "styled-components";
-import { desaturate, saturate } from 'polished'
 
 interface CardProps {
     $color: string
@@ -17,8 +17,16 @@ export const Card = styled.div<CardProps>`
 
     border: .615rem outset #FFE368;
     padding: .25rem .5rem;
-
+    
     background: ${props => props.$color};
+    
+    box-shadow: 1px 1px 15px 1px ${props => props.$color};
+
+    transition: box-shadow .3s ease-out;
+
+    &:hover {
+        box-shadow: 5px 5px 30px 5px ${props => props.$color};
+    }
 
     .title {
         display: flex;
@@ -107,10 +115,18 @@ export const TypeContainer = styled.div`
 export const TypeContent = styled.div<TypeCardContentProps>`
     background: ${props => props.$color};
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 1rem;
     width: 8rem;
     height: 20%;
+    border: 1px outset ${props => saturate(0.25, props.$color)};
+    border-radius: .25rem;
+
+    img {
+        border: 1px inset #FFFFFF;
+        border-radius: 100%;
+    }
 `
 
 export const AbilityContainer = styled.div`
