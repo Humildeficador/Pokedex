@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components'
+import { lighten } from 'polished'
 
 export const GlobalStyle = createGlobalStyle`
     :root {
@@ -69,5 +70,90 @@ export const GlobalStyle = createGlobalStyle`
         to {
             transform: rotate(360deg); /* Até 360 graus de rotação */
         }
-    } 
+    }
+
+    .loadingButton {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #FCD20B;
+        margin-top: 2rem;
+
+        position: relative;
+
+        .social {
+            position: absolute;
+            left: 2rem;
+            display: flex;
+            gap: 1rem;
+
+            a {
+                border: 2px solid var(--slate-950);
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                padding: .25rem;
+                background-color: transparent;
+
+                transition: all .15s ease-out;
+
+                cursor: pointer;
+                
+                svg {
+                    transition: all .15s ease-out;
+                }
+
+                &:hover {
+                    background: var(--slate-950);
+
+                    svg {
+                        stroke: #FCD20B;
+                    }
+                }
+            }
+        }
+
+        img {
+            z-index: 999;
+            width: 120px;
+
+            position: absolute;
+            right: 2rem;
+            bottom: 0;
+
+            cursor: pointer;
+            filter: drop-shadow(1px 1px 5px ${lighten(0.3, '#FCD20B')});
+            transition: all .2s ease-out;
+            
+            &:hover {
+                filter: drop-shadow(1px 1px 10px #FCD20B);
+            }
+        }
+
+        > button {
+            height: 4rem;
+            width: 20rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.315rem;
+            font-weight: 500;
+
+            border: none;
+            outline: 5px solid var(--slate-950);
+
+            border-radius: 20px;
+
+            transition: all .15s ease-out;
+
+            
+            background: var(--zinc-100);
+            &:hover {
+                background: #FCD20B;
+            }
+        }
+    }    
 `
