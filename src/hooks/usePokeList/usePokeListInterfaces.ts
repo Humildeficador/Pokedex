@@ -34,10 +34,7 @@ export interface ApiPokeListDetailsResponseProps {
     height: number
     weight: number
     types: {
-        type: {
-            name: string
-            url: string
-        }
+        type: NamedAPIResource
     }[]
     stats: {
         base_stat: number

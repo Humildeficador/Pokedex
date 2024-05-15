@@ -88,13 +88,28 @@ export const GlobalStyle = createGlobalStyle`
             display: flex;
             gap: 1rem;
 
+            @media (max-width: 700px) {
+                position: fixed;
+                top: 1rem;
+                left: 1rem;
+                flex-direction: column;
+
+                a {
+                    border: 2px solid #FCD20B !important;
+                    backdrop-filter: blur(10px);
+                    svg {
+                        stroke: #FCD20B !important;
+                    }
+                }
+            }
+
             a {
                 border: 2px solid var(--slate-950);
                 border-radius: 10px;
                 display: flex;
                 align-items: center;
                 padding: .25rem;
-                background-color: transparent;
+                background: transparent;
 
                 transition: all .15s ease-out;
 
@@ -102,6 +117,7 @@ export const GlobalStyle = createGlobalStyle`
                 
                 svg {
                     transition: all .15s ease-out;
+                    stroke: var(--slate-950);
                 }
 
                 &:hover {
@@ -128,6 +144,11 @@ export const GlobalStyle = createGlobalStyle`
             
             &:hover {
                 filter: drop-shadow(1px 1px 10px #FCD20B);
+            }
+
+            @media (max-width: 700px) {
+                right: .5rem;
+                width: 100px;
             }
         }
 
