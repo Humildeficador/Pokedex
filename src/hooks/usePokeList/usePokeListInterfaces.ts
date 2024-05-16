@@ -26,6 +26,9 @@ export interface ApiPokeListDetailsResponseProps {
     name: string
     sprites: {
         other: {
+            "official-artwork": {
+                front_default: string
+            }
             dream_world: {
                 front_default: string
             }

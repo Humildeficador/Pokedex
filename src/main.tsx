@@ -1,14 +1,14 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
 import { App } from './App'
-import { PokeListProvider } from './hooks/usePokeList/usePokeList'
+import { StrictMode } from 'react'
+import ReactDOM from 'react-dom/client'
 import { GlobalStyle } from './styles/global'
+import { PokeListProvider } from './hooks/usePokeList/usePokeList'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  <StrictMode>
     <PokeListProvider>
       <App />
+      <GlobalStyle />
     </PokeListProvider>
-    <GlobalStyle />
-  </React.StrictMode>,
+  </StrictMode>,
 )
