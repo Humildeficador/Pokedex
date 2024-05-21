@@ -1,10 +1,13 @@
-import { createGlobalStyle } from 'styled-components'
 import { lighten } from 'polished'
+import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyle = createGlobalStyle`
     :root {
         --slate-950: #020617;
+        --slate-800: #1e293b;
         --zinc-100: #f4f4f5;
+        --yellow-500: #FCD20B;
+        --yellow-300: #FFE368;
     }
 
     * {
@@ -14,8 +17,11 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        background: var(--slate-950);
-        color: var(--slate-950);
+        background: rgb(34,193,195);
+    background: linear-gradient(153deg, rgba(34,193,195,1) 0%, rgba(31,228,152,1) 48%, rgba(44,71,195,1) 100%);
+        background-size: cover;
+        background-attachment: fixed;
+        color: var(--slate-950);   
     }
 
     body, input, textarea, button {
@@ -77,7 +83,7 @@ export const GlobalStyle = createGlobalStyle`
         align-items: center;
         justify-content: center;
 
-        background: #FCD20B;
+        background: var(--yellow-500);
         margin-top: 2rem;
 
         position: relative;
@@ -95,10 +101,10 @@ export const GlobalStyle = createGlobalStyle`
                 flex-direction: column;
 
                 a {
-                    border: 2px solid #FCD20B !important;
+                    border: 2px solid var(--yellow-500) !important;
                     backdrop-filter: blur(10px);
                     svg {
-                        stroke: #FCD20B !important;
+                        stroke: var(--yellow-500) !important;
                     }
                 }
             }
@@ -124,14 +130,13 @@ export const GlobalStyle = createGlobalStyle`
                     background: var(--slate-950);
 
                     svg {
-                        stroke: #FCD20B;
+                        stroke: var(--yellow-500);
                     }
                 }
             }
         }
 
         img {
-            z-index: 999;
             width: 120px;
 
             position: absolute;
@@ -143,7 +148,7 @@ export const GlobalStyle = createGlobalStyle`
             transition: all .2s ease-out;
             
             &:hover {
-                filter: drop-shadow(1px 1px 10px #FCD20B);
+                filter: drop-shadow(1px 1px 10px var(--yellow-500));
             }
 
             @media (max-width: 700px) {
@@ -173,7 +178,7 @@ export const GlobalStyle = createGlobalStyle`
             
             background: var(--zinc-100);
             &:hover {
-                background: #FCD20B;
+                background: var(--yellow-500);
             }
         }
     }    

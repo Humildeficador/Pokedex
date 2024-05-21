@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode } from 'react'
 
 export interface NamedAPIResource {
     name: string
@@ -12,9 +12,19 @@ export interface ApiPokeListResponseProps {
 export interface PokeListDetailsProps {
     id: number
     name: string
-    sprite: string
+    sprites: {
+        frontDefault: string
+        frontShiny: string
+    }
     types: string[]
-    hp: number
+    stats: {
+        hp: number
+        atack: number
+        defense: number
+        specialAtack: number
+        specialDefense: number
+        speed: number
+    }
     height: number
     weight: number
     color: string
@@ -26,8 +36,9 @@ export interface ApiPokeListDetailsResponseProps {
     name: string
     sprites: {
         other: {
-            dream_world: {
+            'official-artwork': {
                 front_default: string
+                front_shiny: string
             }
         }
     }

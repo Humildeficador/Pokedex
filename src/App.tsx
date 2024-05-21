@@ -1,25 +1,49 @@
-import { Loader2Icon } from "lucide-react";
-import { PokeCard } from "./components/PokeCard/PokeCard";
-import { usePokeList } from "./hooks/usePokeList/usePokeList";
-import { Container } from "./styles/styles";
+import { Github, Linkedin, Loader2Icon } from 'lucide-react'
+import { useState } from 'react'
+import { PokeCard } from './components/PokeCard/PokeCard'
+import { PokeCardModal } from './components/PokeCardModal/PokeCardModal'
+import { usePokeList } from './hooks/usePokeList/usePokeList'
+import { Container } from './styles/styles'
+import { PokeListDetailsProps } from './utils/interfaces'
 import pikachu from '/images/pikachu.svg'
-import { Linkedin, Github } from 'lucide-react'
 
 export function App() {
   const { PokeList, isLoading, handleOffsetValue } = usePokeList()
+  const [modalPokemon, setModalPokemon] = useState<PokeListDetailsProps>()
 
   const handleScrolltoTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: 'smooth'
     })
+  }
+
+  const [isOpen, setIsOpen] = useState(false)
+  function handleIsOpen() {
+    setIsOpen(true)
+  }
+  function handleGetPokemon(pokemon: PokeListDetailsProps) {
+    setModalPokemon(pokemon)
+  }
+  function onRequestClose() {
+    setIsOpen(false)
   }
 
   return (
     <>
+      <PokeCardModal
+        isOpen={isOpen}
+        onRequestClose={onRequestClose} 
+        pokemon={modalPokemon}
+      />
       <Container>
         {PokeList.map(pokemon => (
-          <PokeCard key={pokemon.id} pokemon={pokemon} />
+          <PokeCard
+            key={pokemon.id}
+            pokemon={pokemon} 
+            handleIsOpen={handleIsOpen}
+            setModalPokemon={handleGetPokemon}
+          />
         ))
         }
       </Container>
