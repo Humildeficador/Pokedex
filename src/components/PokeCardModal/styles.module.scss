@@ -17,18 +17,57 @@
   position: relative;
   background: var(--slate-800);
   color: var(--zinc-100);
-  height: 800px;
-  width: 700px;
+  width: 500px;
 
   border-radius: .5rem;
-  padding: 1rem;
+  padding: 1rem 1rem 1rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .sprites {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 
   img {
-    width: 100px;
+    width: 200px;
+  }
+
+  button {
+    border: 0;
+    background-color: var(--slate-800);
+    color: var(--zinc-100);
+
+    width: 100%;
+    height: 2rem;
+    border-radius: 100px;
+
+    font-weight: 500;
+
+    transition: .2s ease-out;
+
+    &:hover {
+      filter: brightness(1.25);
+    }
+  }
+}
+
+.statsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-top: 1rem;
+
+  .stats {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
   }
 }
 
@@ -38,9 +77,15 @@
   right: 1rem;
 
   display: inline-flex;
-  padding: .5rem;
+  padding: .25rem;
   background: var(--zinc-100);
 
   border: none;
   border-radius: .25rem;
+
+  transition: .2s ease-out;
+
+  &:hover {
+    filter: brightness(0.85);
+  }
 }
