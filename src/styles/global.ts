@@ -4,6 +4,7 @@ import { lighten } from 'polished'
 export const GlobalStyle = createGlobalStyle`
     :root {
         --slate-950: #020617;
+        --slate-800: #1e293b;
         --zinc-100: #f4f4f5;
     }
 
@@ -14,8 +15,11 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     body {
-        background: var(--slate-950);
-        color: var(--slate-950);
+        background: rgb(34,193,195);
+    background: linear-gradient(153deg, rgba(34,193,195,1) 0%, rgba(31,228,152,1) 48%, rgba(44,71,195,1) 100%);
+        background-size: cover;
+        background-attachment: fixed;
+        color: var(--slate-950);   
     }
 
     body, input, textarea, button {

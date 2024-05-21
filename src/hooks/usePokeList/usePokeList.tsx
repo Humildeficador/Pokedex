@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 
 import { api } from "../../services/api";
 import { capitalize } from '../../utils/capitalize';
-import { APIAbilitiesProps, AbilitiesProps, AbilityProps, ApiPokeListDetailsResponseProps, ApiPokeListResponseProps, NamedAPIResource, PokeListContextData, PokeListContextProps, PokeListDetailsProps } from './usePokeListInterfaces';
+import { APIAbilitiesProps, AbilitiesProps, AbilityProps, ApiPokeListDetailsResponseProps, ApiPokeListResponseProps, NamedAPIResource, PokeListContextData, PokeListContextProps, PokeListDetailsProps } from '../../utils/interfaces';
 
 const LOCALSTORAGE_KEY = '@Humildas_Pokedex'
 
@@ -44,12 +44,15 @@ export function PokeListProvider({ children }: PokeListContextProps) {
 				const newList = await Promise.all(listSliced.map(async pokemon => {
 					const { data } = await api.get<ApiPokeListDetailsResponseProps>(pokemon.url)
 					const abilities = await fetchPokemonAbilities(data.abilities)
-					const sprite = data.sprites.other.dream_world.front_default || data.sprites.other['official-artwork'].front_default
-					const extractedColors = await extractColors(sprite, { crossOrigin: 'anonymous', distance: 1, pixels: 40000 })
+					const front_default = data.sprites.other['official-artwork'].front_default
+					const extractedColors = await extractColors(front_default, { crossOrigin: 'anonymous', distance: 1, pixels: 40000 })
 					return {
 						id: data.id,
-						name: capitalize(data.name),
-						sprite,
+						name: capitalize(data.name.replace(/-/g, ' ')),
+						sprites: {
+							front_default: front_default,
+							front_shiny: data.sprites.other['official-artwork'].front_shiny
+						},
 						abilities,
 						types: data.types.map(type => type.type.name),
 						hp: data.stats[0].base_stat,

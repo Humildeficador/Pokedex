@@ -12,7 +12,10 @@ export interface ApiPokeListResponseProps {
 export interface PokeListDetailsProps {
     id: number
     name: string
-    sprite: string
+    sprites: {
+        front_default: string
+        front_shiny: string
+    }
     types: string[]
     hp: number
     height: number
@@ -28,9 +31,7 @@ export interface ApiPokeListDetailsResponseProps {
         other: {
             "official-artwork": {
                 front_default: string
-            }
-            dream_world: {
-                front_default: string
+                front_shiny: string
             }
         }
     }
