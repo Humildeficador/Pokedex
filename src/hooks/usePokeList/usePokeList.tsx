@@ -14,7 +14,7 @@ export function PokeListProvider({ children }: PokeListContextProps) {
 	const [pokeListDetails, setPokeListDetails] = useState<PokeListDetailsProps[]>([])
 	const [offset, setOffset] = useState(0)
 	const isFirstRunning = useRef(true) // State para controle de Effect
-	const [isLoading, setIsLoading] = useState(false) //State para feedback de 'loading'
+	const [isLoading, setIsLoading] = useState(true) //State para feedback de 'loading'
 
 	useEffect(() => {
 		(async () => {
