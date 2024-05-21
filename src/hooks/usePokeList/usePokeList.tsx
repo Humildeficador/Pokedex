@@ -1,9 +1,9 @@
-import { extractColors } from 'extract-colors';
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { extractColors } from 'extract-colors'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 
-import { api } from "../../services/api";
-import { capitalize } from '../../utils/capitalize';
-import { APIAbilitiesProps, AbilitiesProps, AbilityProps, ApiPokeListDetailsResponseProps, ApiPokeListResponseProps, NamedAPIResource, PokeListContextData, PokeListContextProps, PokeListDetailsProps } from '../../utils/interfaces';
+import { api } from '../../services/api'
+import { capitalize } from '../../utils/capitalize'
+import { APIAbilitiesProps, AbilitiesProps, AbilityProps, ApiPokeListDetailsResponseProps, ApiPokeListResponseProps, NamedAPIResource, PokeListContextData, PokeListContextProps, PokeListDetailsProps } from '../../utils/interfaces'
 
 const LOCALSTORAGE_KEY = '@Humildas_Pokedex'
 
@@ -18,6 +18,7 @@ export function PokeListProvider({ children }: PokeListContextProps) {
 
 	useEffect(() => {
 		(async () => {
+			setIsLoading(true)
 			const localPokeList = localStorage.getItem(LOCALSTORAGE_KEY)
 			if (!localPokeList) {
 				const { data: { results } } = await api.get<ApiPokeListResponseProps>('api/v2/pokemon?limit=1500')
@@ -44,18 +45,25 @@ export function PokeListProvider({ children }: PokeListContextProps) {
 				const newList = await Promise.all(listSliced.map(async pokemon => {
 					const { data } = await api.get<ApiPokeListDetailsResponseProps>(pokemon.url)
 					const abilities = await fetchPokemonAbilities(data.abilities)
-					const front_default = data.sprites.other['official-artwork'].front_default
-					const extractedColors = await extractColors(front_default, { crossOrigin: 'anonymous', distance: 1, pixels: 40000 })
+					const official_artwork = data.sprites.other['official-artwork']
+					const extractedColors = await extractColors(official_artwork.front_default, { crossOrigin: 'anonymous', distance: 1, pixels: 40000 })
 					return {
 						id: data.id,
 						name: capitalize(data.name.replace(/-/g, ' ')),
 						sprites: {
-							front_default: front_default,
-							front_shiny: data.sprites.other['official-artwork'].front_shiny
+							frontDefault: official_artwork.front_default,
+							frontShiny: official_artwork.front_shiny
 						},
 						abilities,
 						types: data.types.map(type => type.type.name),
-						hp: data.stats[0].base_stat,
+						stats: {
+							hp: data.stats[0].base_stat,
+							atack: data.stats[1].base_stat,
+							defense: data.stats[2].base_stat,
+							specialAtack: data.stats[3].base_stat,
+							specialDefense: data.stats[4].base_stat,
+							speed: data.stats[5].base_stat
+						},
 						height: data.height / 10,
 						weight: data.weight / 10,
 						color: extractedColors[0].hex
@@ -67,17 +75,17 @@ export function PokeListProvider({ children }: PokeListContextProps) {
 				})
 
 			} catch (error) {
-				console.error('Erro ao obter a lista de pokemons', error);
+				console.error('Erro ao obter a lista de pokemons', error)
 			}
 			finally {
 				setIsLoading(false)
 			}
 		}
-		fetchPokemonList();
+		fetchPokemonList()
 	}, [offset, pokeList])
 
 	function handleOffsetValue() {
-		setOffset(prevState => prevState + 20);
+		setOffset(prevState => prevState + 20)
 	}
 
 	return (
@@ -88,7 +96,7 @@ export function PokeListProvider({ children }: PokeListContextProps) {
 		}}>
 			{children}
 		</PokeListContext.Provider>
-	);
+	)
 }
 
 async function fetchPokemonAbilities(abilitiesList: AbilitiesProps[]): Promise<AbilityProps[]> {
@@ -101,7 +109,7 @@ async function fetchPokemonAbilities(abilitiesList: AbilitiesProps[]): Promise<A
 
 		return {
 			name: capitalize(ability.name.replace(/-/g, ' ')),
-			text: text?.flavor_text || `I'm sorry, we have no information about this ability`,
+			text: text?.flavor_text || 'I\'m sorry, we have no information about this ability',
 		}
 	}))
 }
