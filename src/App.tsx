@@ -1,11 +1,11 @@
-import { Github, Linkedin, Loader2Icon } from "lucide-react";
-import { useState } from "react";
-import { PokeCard } from "./components/PokeCard/PokeCard";
-import { PokeCardModal } from "./components/PokeCardModal/PokeCardModal";
-import { usePokeList } from "./hooks/usePokeList/usePokeList";
-import { Container } from "./styles/styles";
-import { PokeListDetailsProps } from "./utils/interfaces";
-import pikachu from '/images/pikachu.svg';
+import { Github, Linkedin, Loader2Icon } from 'lucide-react'
+import { useState } from 'react'
+import { PokeCard } from './components/PokeCard/PokeCard'
+import { PokeCardModal } from './components/PokeCardModal/PokeCardModal'
+import { usePokeList } from './hooks/usePokeList/usePokeList'
+import { Container } from './styles/styles'
+import { PokeListDetailsProps } from './utils/interfaces'
+import pikachu from '/images/pikachu.svg'
 
 export function App() {
   const { PokeList, isLoading, handleOffsetValue } = usePokeList()
@@ -14,7 +14,7 @@ export function App() {
   const handleScrolltoTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: 'smooth'
     })
   }
 

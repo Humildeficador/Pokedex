@@ -1,5 +1,5 @@
-import { desaturate, saturate } from 'polished';
-import styled from "styled-components";
+import { desaturate, saturate } from 'polished'
+import styled from 'styled-components'
 
 interface CardProps {
     $color: string
@@ -15,7 +15,7 @@ export const Card = styled.div<CardProps>`
     width: 315px;
     height: 450px;
 
-    border: .615rem outset #FFE368;
+    border: .615rem outset var(--yellow-300);
     padding: .25rem .5rem;
     
     background: ${props => props.$color};
@@ -23,6 +23,8 @@ export const Card = styled.div<CardProps>`
     box-shadow: 1px 1px 15px 1px ${props => props.$color};
 
     transition: box-shadow .3s ease-out;
+
+    cursor: pointer;
 
     &:hover {
         box-shadow: 5px 5px 30px 5px ${props => props.$color};

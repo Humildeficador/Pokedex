@@ -1,4 +1,4 @@
-import { capitalize } from "./capitalize"
+import { capitalize } from './capitalize'
 
 export interface getTypeInfoProps {
     name: string

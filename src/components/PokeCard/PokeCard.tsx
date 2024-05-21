@@ -1,6 +1,6 @@
-import { getTypeInfo, getTypeInfoProps } from '../../utils/getTypeInfo';
-import { AbilityProps, PokeListDetailsProps } from '../../utils/interfaces';
-import { AbilityContainer, AbilityContent, Card, Description, TypeContainer, TypeContent } from './styles';
+import { getTypeInfo, getTypeInfoProps } from '../../utils/getTypeInfo'
+import { AbilityProps, PokeListDetailsProps } from '../../utils/interfaces'
+import { AbilityContainer, AbilityContent, Card, Description, TypeContainer, TypeContent } from './styles'
 
 interface PokeCardProps {
   pokemon: PokeListDetailsProps
@@ -28,7 +28,7 @@ export function PokeCard({ pokemon, handleIsOpen, setModalPokemon }: PokeCardPro
         <div className='hp'>
           <span>
             <span>ps</span>
-            {pokemon.hp}
+            {pokemon.stats.hp}
           </span>
           <img
             src={pokeTypes[0].img}
@@ -39,7 +39,7 @@ export function PokeCard({ pokemon, handleIsOpen, setModalPokemon }: PokeCardPro
         </div>
       </div>
       <div className='imagem'>
-        <img src={pokemon.sprites.front_default} alt={pokemon.name} width={200} height={200} />
+        <img src={pokemon.sprites.frontDefault} alt={pokemon.name} width={200} height={200} />
         <div className='description'>
           <span className='id'>Nº{pokemon.id.toString().padStart(3, '0')}</span>
           <span className='height'>Altura: {pokemon.height.toFixed(1)}m</span>
@@ -48,7 +48,7 @@ export function PokeCard({ pokemon, handleIsOpen, setModalPokemon }: PokeCardPro
       </div>
       <TypeCard pokeTypes={pokeTypes} name={pokemon.name} abilities={pokemon.abilities} />
     </Card>
-  );
+  )
 }
 
 interface TypeCardProps {
@@ -86,5 +86,5 @@ function TypeCard({ name, abilities, pokeTypes }: TypeCardProps) {
         ))}
       </AbilityContainer>
     </Description>
-  );
+  )
 }
