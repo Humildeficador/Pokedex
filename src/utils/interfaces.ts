@@ -5,10 +5,6 @@ export interface NamedAPIResource {
     url: string
 }
 
-export interface ApiPokeListResponseProps {
-    results: NamedAPIResource[]
-}
-
 export interface PokeListDetailsProps {
     id: number
     name: string

@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react'
 
 import { api } from '../../services/api'
 import { capitalize } from '../../utils/capitalize'
-import { APIAbilitiesProps, AbilitiesProps, AbilityProps, ApiPokeListDetailsResponseProps, ApiPokeListResponseProps, NamedAPIResource, PokeListContextData, PokeListContextProps, PokeListDetailsProps } from '../../utils/interfaces'
+import { APIAbilitiesProps, AbilitiesProps, AbilityProps, ApiPokeListDetailsResponseProps, NamedAPIResource, PokeListContextData, PokeListContextProps, PokeListDetailsProps } from '../../utils/interfaces'
 
 const LOCALSTORAGE_KEY = '@Humildas_Pokedex'
 
@@ -21,7 +21,8 @@ export function PokeListProvider({ children }: PokeListContextProps) {
 			setIsLoading(true)
 			const localPokeList = localStorage.getItem(LOCALSTORAGE_KEY)
 			if (!localPokeList) {
-				const { data: { results } } = await api.get<ApiPokeListResponseProps>('api/v2/pokemon?limit=1500')
+				const { data: { results } } = await api
+					.get<{ results: NamedAPIResource[] }>('api/v2/pokemon?limit=1500')
 				localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(results))
 				setPokeList(results)
 				return
