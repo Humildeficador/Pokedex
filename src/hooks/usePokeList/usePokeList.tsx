@@ -41,7 +41,7 @@ export function PokeListProvider({ children }: PokeListContextProps) {
 		async function fetchPokemonList(): Promise<void> {
 			setIsLoading(true)
 			try {
-				const listSliced = pokeList.slice(offset, offset + 20)
+				const listSliced = pokeList.slice(offset, offset + 21)
 				const newList = await Promise.all(listSliced.map(async pokemon => {
 					const { data } = await api.get<ApiPokeListDetailsResponseProps>(pokemon.url)
 					const abilities = await fetchPokemonAbilities(data.abilities)
